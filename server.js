@@ -17,8 +17,7 @@ function setupVariables() {
             port    : process.env.OPENSHIFT_MYSQL_DB_PORT,
             user    : process.env.OPENSHIFT_MYSQL_DB_USERNAME,
             password: process.env.OPENSHIFT_MYSQL_DB_PASSWORD,
-            database: "shoppingbuddies",
-            multipleStatements: true     
+            database: "shoppingbuddies"   
         });
         if (typeof ipaddress === "undefined") {
             //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
@@ -29,8 +28,7 @@ function setupVariables() {
                 host    : "localhost",
                 user    : "root",
                 password: "Tra@2014",
-                database: "sbtry", 
-                multipleStatements: true    
+                database: "sbtry"   
             });
         };
     }
