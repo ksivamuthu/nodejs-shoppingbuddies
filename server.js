@@ -574,10 +574,9 @@ function createTrip (req,res,next) {
                      "'" + data.meetup + "'," 
                      "'" + data.friends + "',"
                      "'" + data.venues + "'"; 
-
     connection.query('CALL createNewTrip(' + params + ')',function(err,result){
         if(err)
-             res.send(200,{error: err});
+             res.send(200,{error: err, params: params});
         else
             res.send(200,result.insertId);
     });
