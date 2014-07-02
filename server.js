@@ -101,7 +101,7 @@ function setupVariables() {
 
 function getTrip (req,res,next) {
     res.setHeader('Access-Control-Origin','*');
-    var params = "'" + req.params.userId + "','" + req.params.includepast + "'";
+    var params = "'" + req.params.userId + "'," + req.params.past ;
     connection.query('CALL getTrips(' + params + ')',function(err,result){
         if(err)
             res.send(200,{error: err, query:data.userId});
