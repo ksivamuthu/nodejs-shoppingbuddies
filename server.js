@@ -568,12 +568,12 @@ function createTrip (req,res,next) {
     res.setHeader('Access-Control-Origin','*');
     var params = "'" + data.tripName + "',"
                      + data.userId + "," 
-                     "'" + data.occasion + "'," 
+                     + "'" + data.occasion + "'," 
                      + data.date + ","
-                     "'" + data.duration + "'," 
-                     "'" + data.meetup + "'," 
-                     "'" + data.friends + "',"
-                     "'" + data.venues + "'"; 
+                     + "'" + data.duration + "'," 
+                     + "'" + data.meetup + "'," 
+                     + "'" + data.friends + "',"
+                     + "'" + data.venues + "'"; 
     connection.query('CALL createNewTrip(' + params + ')',function(err,result){
         if(err)
              res.send(200,{error: err, params: params});
