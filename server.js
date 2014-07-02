@@ -116,7 +116,7 @@ function getTrip (req,res,next) {
 function login(req,res,next) {
     res.setHeader('Access-Control-Origin','*');
     var data = req.body;
-    var params = "'" + data.name + "',"  + data.app_unique_id;
+    var params = "'" + data.name + "','"  + data.app_unique_id + "'";
     connection.query('CALL loginApp(' + params + ')',function(err, result) {
         if(err){
             res.send(200,{error: err});
