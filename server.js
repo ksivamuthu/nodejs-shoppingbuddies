@@ -566,7 +566,7 @@ function createTrip (req,res,next) {
     
     var data = req.body;
     res.setHeader('Access-Control-Origin','*');
-    var queryparms = "'" + data.tripName + "',"
+    var params = "'" + data.tripName + "',"
                      + data.userId + "," 
                      "'" + data.occasion + "'," 
                      + data.date + ","
