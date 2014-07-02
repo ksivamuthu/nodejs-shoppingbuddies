@@ -17,7 +17,8 @@ function setupVariables() {
             port    : process.env.OPENSHIFT_MYSQL_DB_PORT,
             user    : process.env.OPENSHIFT_MYSQL_DB_USERNAME,
             password: process.env.OPENSHIFT_MYSQL_DB_PASSWORD,
-            database: "shoppingbuddies"   
+            database: "shoppingbuddies",
+            multipleStatements: true     
         });
         if (typeof ipaddress === "undefined") {
             //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
@@ -28,7 +29,8 @@ function setupVariables() {
                 host    : "localhost",
                 user    : "root",
                 password: "Tra@2014",
-                database: "sbtry",    
+                database: "sbtry", 
+                multipleStatements: true    
             });
         };
     }
@@ -69,7 +71,7 @@ function setupVariables() {
         connection.connect(function(err){
            if(err)
             console.log("ERROR : "+err);
-        else
+        else 
             console.log("SUCCESS connected to database");
        });
      }
@@ -560,71 +562,30 @@ function createAccount (req,res,next) {
     });
 
 }
+
+//Create trip
 function createTrip (req,res,next) {
-    // body...
-    var data={};
-    data.tripName=req.params.tripName;
-    data.userId=req.params.userId;
-    data.occasion=req.params.occasion;
-    data.date=req.params.date;
-    data.duration=req.params.duration;
-    data.meetup=req.params.meetup;
-    data.friends=req.params.friends;
-    data.venues=req.params.venues;
-    res.setHeader('Access-Control-Origin','*');
-    var date=new Date();
-
-    var yyyy=date.getFullYear().toString();
-    var mm=(date.getMonth()+1).toString();
-    var dd=date.getDate().toString();
-    var mmChars = mm.split('');
-    var ddChars = dd.split('');
-    var datestring = yyyy + '-' + (mmChars[1]?mm:"0"+mmChars[0]) + '-' + (ddChars[1]?dd:"0"+ddChars[0]);
     
-    query=connection.query('insert into trip (tripname,createdBy,createdDate,occasion,date,duration,meetup) values ("'+data.tripName+'","'+data.userId+'","'+datestring+'","'+data.occasion+'","'+data.date+'","'+data.duration+'","'+data.meetup+'");',function(err,result){
-        if(err)
-            console.log("ERROR : "+err);
-        else{
-            console.log("SUCCESS : "+result);
-            console.log(query.sql);
-            res.send(200,result);
-        }
-    });
-    console.log(data.friends);
-    var i=0;
-    while(data.friends[i])
-    {
-    query=connection.query('insert into tripattendees (tripId,invitees,status) values (last_insert_id(),'+data.friends[i]+',"No");',function(err,result){
-        if(err)
-            console.log("ERROR : "+err);
-        else{
-            console.log("SUCCESS : "+result);
-            console.log(query.sql);
-            res.send(200,result);
-        }
-    });
-    i=i+1;
-    }
-    var j=0;
-    //var v=JSON.stringify(data.venues);
-    console.log(data.venues[0]);
-    while(data.venues[j])
-    {
-        //var v=JSON.stringify(ven[j]);
-        //console.log(v);
-    query=connection.query('insert into tripvenues (tripId,name,address,latitude,longitude) values (last_insert_id(), "'+data.venues[j].tripName+'" ,"'+data.venues[j].address+'",'+data.venues[j].latitude+','+data.venues[j].longitude+');',function(err,result){
-        if(err)
-            console.log("ERROR : "+err);
-        else{
-            console.log("SUCCESS : "+result);
-            console.log(query.sql);
-            res.send(200,result);
-        }
-    });
-    j=j+1;
-    }
+    var data = req.body;
+    res.setHeader('Access-Control-Origin','*');
+    var queryparms = "'" + data.tripName + "',"
+                     + data.userId + "," 
+                     "'" + data.occasion + "'," 
+                     + data.date + ","
+                     "'" + data.duration + "'," 
+                     "'" + data.meetup + "'," 
+                     "'" + data.friends + "',"
+                     "'" + data.venues + "'"; 
 
+    query=connection.query('CALL createNewTrip(' + params + ')',function(err,result){
+        if(err)
+             res.send(200,{error: err});
+        else{
+            res.send(200,result.insertId);
+        }
+    });
 }
+
 function addFriend (req,res,next) {
     // body...
     var data={};
@@ -634,13 +595,11 @@ function addFriend (req,res,next) {
     query=connection.query('insert into friends (req_sent,req_rec,status) values ('+data.req_sent+','+data.req_rec+',0);',function(err,result){
         if(err)
             console.log("ERROR : "+err);
+            res.send(200, {error: err});
         else{
-            console.log("SUCCESS : "+result);
-            console.log(query.sql);
             res.send(200,result);
         }
     });
-    
 }
 function acceptFriend (req,res,next) {
     // body...
