@@ -569,7 +569,7 @@ function createTrip (req,res,next) {
     var params = "'" + data.tripName + "',"
                      + data.userId + "," 
                      + "'" + data.occasion + "'," 
-                     + data.date + ","
+                     + "'" + data.date + "',"
                      + "'" + data.duration + "'," 
                      + "'" + data.meetup + "'," 
                      + "'" + data.friends + "',"
