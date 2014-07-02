@@ -575,12 +575,11 @@ function createTrip (req,res,next) {
                      "'" + data.friends + "',"
                      "'" + data.venues + "'"; 
 
-    query=connection.query('CALL createNewTrip(' + params + ')',function(err,result){
+    connection.query('CALL createNewTrip(' + params + ')',function(err,result){
         if(err)
              res.send(200,{error: err});
-        else{
+        else
             res.send(200,result.insertId);
-        }
     });
 }
 
@@ -592,11 +591,9 @@ function addFriend (req,res,next) {
     res.setHeader('Access-Control-Origin','*');
     query=connection.query('insert into friends (req_sent,req_rec,status) values ('+data.req_sent+','+data.req_rec+',0);',function(err,result){
         if(err)
-            console.log("ERROR : "+err);
             res.send(200, {error: err});
-        else{
+        else
             res.send(200,result);
-        }
     });
 }
 function acceptFriend (req,res,next) {
