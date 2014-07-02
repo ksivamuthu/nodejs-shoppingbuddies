@@ -121,7 +121,7 @@ function login(req,res,next) {
         if(err){
             res.send(200,{error: err});
         } else {
-            res.send(result[0]);
+            res.send(result[0][0]);
         }
     });
 }
