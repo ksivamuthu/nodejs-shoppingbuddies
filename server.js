@@ -96,7 +96,7 @@ function createTrip (req,res,next) {
         if(err)
              res.send(200,{error: err, params: params});
         else
-            res.send(200,result.insertId);
+            res.send(200,result[0]);
     });
 }
 
@@ -107,7 +107,7 @@ function getTrip (req,res,next) {
         if(err)
             res.send(200,{error: err, query:req.params.userId});
         else{
-            res.send(200,result);
+            res.send(200,result[0]);
         }
     });
 }
@@ -121,7 +121,7 @@ function login(req,res,next) {
         if(err){
             res.send(200,{error: err});
         } else {
-            res.send(result);
+            res.send(result[0]);
         }
     });
 }
