@@ -104,7 +104,7 @@ function getTrip (req,res,next) {
     var params = "'" + req.params.userId + "'," + req.params.past ;
     connection.query('CALL getTrips(' + params + ')',function(err,result){
         if(err)
-            res.send(200,{error: err, query:data.userId});
+            res.send(200,{error: err, query:req.params.userId});
         else{
             res.send(200,result);
         }
