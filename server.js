@@ -102,19 +102,15 @@ function setupVariables() {
 function getTrip (req,res,next) {
     // body...
     var data={};
-    console.log(req.params.userId);
     data.userId=req.params.userId;
     res.setHeader('Access-Control-Origin','*');
-    query=connection.query('select * from trip where createdBy='+data.userId,function(err,result){
-        console.log(query.sql);
+    connection.query('select * from trip where createdBy='+data.userId,function(err,result){
         if(err)
-            console.log("ERROR : "+err);
+            res.send(200,{error: err});
         else{
-            console.log("SUCCESS : "+result);
             res.send(200,result);
         }
     });
-    
 }
 function getFriends (req,res,next) {
     // body...
