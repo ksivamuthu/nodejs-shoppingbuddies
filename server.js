@@ -100,18 +100,17 @@ function setupVariables() {
 
 
 function getTrip (req,res,next) {
-    // body...
-    var data={};
-    data.userId=req.params.userId;
     res.setHeader('Access-Control-Origin','*');
-    connection.query('select * from trip where createdBy='+data.userId,function(err,result){
+    var params = "'" + req.params.userId + "','" + req.params.includepast + "'";
+    connection.query('CALL getTrips(' + params + ')',function(err,result){
         if(err)
-            res.send(200,{error: err});
+            res.send(200,{error: err, query:data.userId});
         else{
             res.send(200,result);
         }
     });
 }
+
 function getFriends (req,res,next) {
     // body...
     var data={};
