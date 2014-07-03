@@ -101,7 +101,7 @@ function createTrip (req,res,next) {
             var friends = data.invitedfriends;
             if(friends && friends.length > 0) {
                 for(var i = 0; i <= friends.length; i++){
-                    addAttendee(invitedfriends[i]);
+                    addAttendee(invitedfriends[i],data,result[0][0].TRIP_INSERT_ID);
                 }
             }
             res.send(200, {success: true});
@@ -162,8 +162,8 @@ function updateTripStatus (req,res,next) {
     });  
 }
 
-function addAttendee(data) {
-    var params = "'" + data.attendeeFBId +  "'," + data.tripId + "," + data.status;
+function addAttendee(data,tripId,status) {
+    var params = "'" + data.attendeeFBId +  "'," + tripId + "," + status;
     connection.query('CALL addAttendee(' + params + ')',function(err, result) {
         if(err){
            return false;
