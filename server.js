@@ -39,6 +39,8 @@ function setupVariables() {
         server.post("/login",login);
         server.post("/createTrip",createTrip);
         server.get("/trips",getTrip);
+        server.post("/leaveTrip",leaveTrip);
+        server.get("/updateTripStatus",updateTripStatus);
     }
 
 
@@ -95,8 +97,15 @@ function createTrip (req,res,next) {
     connection.query('CALL createNewTrip(' + params + ')',function(err,result){
         if(err)
              res.send(200,{error: err, params: params});
-        else
-            res.send(200,result[0]);
+        else {
+            var friends = data.invitedfriends;
+            if(friends && friends.length > 0) {
+                for(var i = 0; i <= friends.length; i++){
+                    addAttendee(invitedfriends[i]);
+                }
+            }
+            res.send(200, {success: true});
+        }
     });
 }
 
@@ -122,6 +131,44 @@ function login(req,res,next) {
             res.send(200,{error: err});
         } else {
             res.send(result[0][0]);
+        }
+    });
+}
+
+
+function leaveTrip(req,res,next){
+    res.setHeader('Access-Control-Origin','*');
+    var data = req.body;
+    var params = data.tripId + "," + data.userId;
+    connection.query('CALL leaveTrip(' + params + ')',function(err, result) {
+        if(err){
+            res.send(200,{error: err});
+        } else {
+            res.send(result[0][0]);
+        }
+    });   
+}
+
+function updateTripStatus (req,res,next) {
+   res.setHeader('Access-Control-Origin','*');
+    var data = req.body;
+    var params = data.userId + "," + data.tripId + "," + data.status;
+    connection.query('CALL updateTripStatus(' + params + ')',function(err, result) {
+        if(err){
+            res.send(200,{error: err});
+        } else {
+            res.send(result[0][0]);
+        }
+    });  
+}
+
+function addAttendee(data) {
+    var params = "'" + data.attendeeFBId +  "'," + data.tripId + "," + data.status;
+    connection.query('CALL addAttendee(' + params + ')',function(err, result) {
+        if(err){
+           return false;
+        } else {
+            return true;
         }
     });
 }
