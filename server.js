@@ -102,7 +102,7 @@ function createTrip (req,res,next) {
             if(friends && friends.length > 0) {
                 var count = 0;
                 for(var i = 0; i <= friends.length; i++){
-                    var params = "'" + friends[i] +  "'," + result[0][0].TRIP_INSERT_ID + "," + status;
+                    var params = "'" + friends[i] +  "'," + result[0][0].TRIP_INSERT_ID + ",1";
                     connection.query('CALL addAttendee(' + params + ')',function(err, result) {
                         if(err){
                            
