@@ -167,9 +167,9 @@ function leaveTrip(req,res,next){
     var params = data.tripId + "," + data.userId;
     connection.query('CALL leaveTrip(' + params + ')',function(err, result) {
         if(err){
-            res.send(200,{error: err});
+            res.send(500,{error: err});
         } else {
-            res.send(result[0][0]);
+            res.send(200, {success: true});
         }
     });   
 }
