@@ -96,7 +96,7 @@ function createTrip (req,res,next) {
                      + "'" + data.venues + "'"; 
     connection.query('CALL createNewTrip(' + params + ')',function(err,result){
         if(err)
-             res.send(200,{error: err, params: params});
+             res.send(500,{error: err, params: params});
         else {
             var friends = data.invitedfriends;
             if(friends && friends.length > 0) {
@@ -105,11 +105,11 @@ function createTrip (req,res,next) {
                     var params = "'" + friends[i] +  "'," + result[0][0].TRIP_INSERT_ID + ",1";
                     connection.query('CALL addAttendee(' + params + ')',function(err, result) {
                         if(err){
-                           
+                           res.send(500, {error:"trip is not created"})
                         } else {
                            count = count + 1;
                            if(count == friends.length){
-                             res.send(200,result[0][0]);
+                             res.send(200,{success: true});
                            }
                         }
                     });            
