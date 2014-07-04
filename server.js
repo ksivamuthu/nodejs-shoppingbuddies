@@ -101,7 +101,7 @@ function createTrip (req,res,next) {
             var friends = data.invitedfriends;
             if(friends && friends.length > 0) {
                 for(var i = 0; i <= friends.length; i++){
-                    addAttendee(friends[i],data,result[0][0].TRIP_INSERT_ID);
+                    addAttendee(friends[i],data,result[0][0].TRIP_INSERT_ID,1);
                 }
             }
             res.send(200, result[0][0]);
