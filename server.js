@@ -178,7 +178,7 @@ function updateTripStatus (req,res,next) {
    res.setHeader('Access-Control-Origin','*');
     var data = req.body;
     var params = data.userId + "," + data.tripId + "," + data.status;
-    connection.query('CALL updateTripStatus(' + params + ')',function(err, result) {
+    connection.query('Update TRIP_ATTENDEES SET STATUS =' + data.status + ', RESPONDED = 1 WHERE ATTENDEEID =' + userId +'and TRIPID = ' +tripId +';',function(err, result) {
         if(err){
             res.send(200,{error: err});
         } else {
