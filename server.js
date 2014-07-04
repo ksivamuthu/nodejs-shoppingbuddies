@@ -40,7 +40,7 @@ function setupVariables() {
         server.post("/createTrip",createTrip);
         server.get("/trips",getTrip);
         server.post("/leaveTrip",leaveTrip);
-        server.get("/updateTripStatus",updateTripStatus);
+        server.post("/updateTripStatus",updateTripStatus);
     }
 
 
