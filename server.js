@@ -182,7 +182,7 @@ function updateTripStatus (req,res,next) {
         if(err){
             res.send(200,{error: err});
         } else {
-            res.send(result[0][0]);
+            res.send(200,{success: true});
         }
     });  
 }
