@@ -104,7 +104,7 @@ function createTrip (req,res,next) {
                     addAttendee(friends[i],data,result[0][0].TRIP_INSERT_ID);
                 }
             }
-            res.send(200, {success: true});
+            res.send(200, result[0][0]);
         }
     });
 }
