@@ -165,7 +165,7 @@ function leaveTrip(req,res,next){
     res.setHeader('Access-Control-Origin','*');
     var data = req.body;
     var params = data.tripId + "," + data.userId;
-    connection.query('CALL leaveTrip(' + params + ')',function(err, result) {
+    connection.query('DELETE FROM TRIP_ATTENDEES WHERE TRIPID=' + data.tripId + ' AND ATTENDEEID=' + data.userId +';',function(err, result) {
         if(err){
             res.send(500,{error: err});
         } else {
