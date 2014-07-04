@@ -100,11 +100,23 @@ function createTrip (req,res,next) {
         else {
             var friends = data.invitedfriends;
             if(friends && friends.length > 0) {
+                var count = 0;
                 for(var i = 0; i <= friends.length; i++){
-                    addAttendee(friends[i],data,result[0][0].TRIP_INSERT_ID,1);
+                    var params = "'" + friends[i] +  "'," + result[0][0].TRIP_INSERT_ID + "," + status;
+                    connection.query('CALL addAttendee(' + params + ')',function(err, result) {
+                        if(err){
+                           
+                        } else {
+                           count = count + 1;
+                           if(count == friends.length){
+                             res.send(200,result[0][0]);
+                           }
+                        }
+                    });            
                 }
+            }else {
+                res.send(200, result[0][0]);
             }
-            res.send(200, result[0][0]);
         }
     });
 }
@@ -176,14 +188,7 @@ function updateTripStatus (req,res,next) {
 }
 
 function addAttendee(attendeeFBId,tripId,status) {
-    var params = "'" + attendeeFBId +  "'," + tripId + "," + status;
-    connection.query('CALL addAttendee(' + params + ')',function(err, result) {
-        if(err){
-           return false;
-        } else {
-            return true;
-        }
-    });
+    
 }
 
 initialize();
