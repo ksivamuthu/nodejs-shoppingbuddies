@@ -116,7 +116,7 @@ function getTrip (req,res,next) {
     var tripAttendees = [];
     connection.query('CALL getUserTrips(' + params + ')',function(err,result){
         if(err)
-            res.send(200,{});
+            res.send(200,{error: err});
         else{
             trips = result[0];
             tripAttendees  = result[1];
