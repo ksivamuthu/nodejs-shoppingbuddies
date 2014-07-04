@@ -112,11 +112,24 @@ function createTrip (req,res,next) {
 function getTrip (req,res,next) {
     res.setHeader('Access-Control-Origin','*');
     var params = "'" + req.params.userId + "'," + req.params.past ;
-    connection.query('CALL getTrips(' + params + ')',function(err,result){
+    var trips;
+    var tripAttendees = [];
+    connection.query('CALL getUserTrips(' + params + ')',function(err,result){
         if(err)
-            res.send(200,{error: err, query:req.params.userId});
+            res.send(200,{});
         else{
-            res.send(200,result[0]);
+            trips = result[0];
+            tripAttendees  = result[1];
+
+            for(var i = 0; i<trips.length; i++) {
+                 trips[i]["attendees"] = [];
+                 for(var j = 0; j< tripAttendees.length; j++) {
+                    if(tripAttendees[j].tripId == trips[i].tripId) {
+                       trips[i]["attendees"].push(tripAttendees[j]);
+                    }
+                 }
+            }
+            res.send(200, trips);
         }
     });
 }
