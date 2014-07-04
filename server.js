@@ -175,8 +175,8 @@ function updateTripStatus (req,res,next) {
     });  
 }
 
-function addAttendee(data,tripId,status) {
-    var params = "'" + data.attendeeFBId +  "'," + tripId + "," + status;
+function addAttendee(attendeeFBId,tripId,status) {
+    var params = "'" + attendeeFBId +  "'," + tripId + "," + status;
     connection.query('CALL addAttendee(' + params + ')',function(err, result) {
         if(err){
            return false;
